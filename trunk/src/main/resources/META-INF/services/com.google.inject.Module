@@ -1,0 +1,4 @@
+com.kissme.photo.interfaces.InterfacesModule
+com.kissme.photo.application.ApplicationModule
+com.kissme.photo.infrastructure.http.transport.NettyTransportModule
+com.kissme.photo.infrastructure.persist.DevelopmentPersistModule
