@@ -8,8 +8,6 @@ import com.kissme.photo.interfaces.gallery.CreateGalleryRequestHandler;
 import com.kissme.photo.interfaces.gallery.DeleteGalleryRequestHandler;
 import com.kissme.photo.interfaces.gallery.EditGalleryRequestHandler;
 import com.kissme.photo.interfaces.gallery.QueryGalleryRequestHandler;
-import com.kissme.photo.interfaces.interceptor.SignatureVerifyRequestInterceptor;
-import com.kissme.photo.interfaces.interceptor.TimestampVerifyRequestInterceptor;
 import com.kissme.photo.interfaces.photo.CreatePhotoRequestHandler;
 import com.kissme.photo.interfaces.photo.DeletePhotoRequestHandler;
 import com.kissme.photo.interfaces.photo.GetPhotoRequestHandler;
@@ -39,8 +37,8 @@ public class InterfacesModule extends AbstractModule {
 		bind(QueryPhotoRequestHandler.class).asEagerSingleton();
 		bind(DeletePhotoRequestHandler.class).asEagerSingleton();
 
-		bind(TimestampVerifyRequestInterceptor.class).asEagerSingleton();
-		bind(SignatureVerifyRequestInterceptor.class).asEagerSingleton();
+//		bind(TimestampVerifyRequestInterceptor.class).asEagerSingleton();
+//		bind(SignatureVerifyRequestInterceptor.class).asEagerSingleton();
 	}
 
 }

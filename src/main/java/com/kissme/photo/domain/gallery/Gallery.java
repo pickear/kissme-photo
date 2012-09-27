@@ -15,6 +15,7 @@ public class Gallery extends AbstractDomain {
 	private static final long serialVersionUID = 1L;
 
 	private String name;
+	private int capacity = 256;
 	private App app;
 
 	public String getName() {
@@ -23,6 +24,15 @@ public class Gallery extends AbstractDomain {
 
 	public Gallery setName(String name) {
 		this.name = name;
+		return this;
+	}
+
+	public int getCapacity() {
+		return capacity;
+	}
+
+	public Gallery setCapacity(int capacity) {
+		this.capacity = capacity;
 		return this;
 	}
 

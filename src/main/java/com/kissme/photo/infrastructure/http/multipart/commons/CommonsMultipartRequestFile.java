@@ -2,6 +2,7 @@ package com.kissme.photo.infrastructure.http.multipart.commons;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
@@ -78,6 +79,19 @@ public class CommonsMultipartRequestFile implements MultipartRequestFile {
 		}
 		byte[] bytes = this.fileItem.get();
 		return (bytes != null ? bytes : new byte[0]);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.kissme.photo.infrastructure.http.multipart.MultipartRequestFile#getInputStream()
+	 */
+	@Override
+	public InputStream getInputStream() throws IOException {
+		if (!isAvailable()) {
+			throw new IllegalStateException("File has already been moved - cannot be transferred again");
+		}
+		return this.fileItem.getInputStream();
 	}
 
 	public void transferTo(File dest) throws IOException, IllegalStateException {

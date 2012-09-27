@@ -12,6 +12,9 @@ import org.jboss.netty.handler.codec.http.HttpMethod;
 import com.google.inject.Inject;
 import com.kissme.photo.application.PhotoService;
 import com.kissme.photo.domain.photo.Photo;
+import com.kissme.photo.domain.photo.PhotoThumbConf;
+import com.kissme.photo.infrastructure.Exceptions;
+import com.kissme.photo.infrastructure.Jsons;
 import com.kissme.photo.infrastructure.http.Request;
 import com.kissme.photo.infrastructure.http.RequestHandler;
 import com.kissme.photo.infrastructure.http.Response;
@@ -47,15 +50,21 @@ public class GetPhotoRequestHandler implements RequestHandler {
 	public void handleRequest(Request request, Response response) {
 
 		// e... there is something wrong..
-		String id = request.getPathVariables().get("id");
-		Photo entity = galleryPhotoService.get(id);
+		try {
 
-		response.addHeader(HttpHeaders.Names.CACHE_CONTROL, maxAgeCacheControl());
-		response.addHeader(HttpHeaders.Names.EXPIRES, expiresAt(entity));
-		response.addHeader(HttpHeaders.Names.LAST_MODIFIED, lastModifiedAt(entity));
+			String id = request.getPathVariables().get("id");
+			Photo entity = galleryPhotoService.get(id);
+			PhotoThumbConf conf = Jsons.newfor(request.getParameterMap(), PhotoThumbConf.class);
 
-		response.setContentType(entity.getContentType());
-		response.setContent(ChannelBuffers.copiedBuffer(entity.getContent()));
+			response.addHeader(HttpHeaders.Names.CACHE_CONTROL, maxAgeCacheControl());
+			response.addHeader(HttpHeaders.Names.EXPIRES, expiresAt(entity));
+			response.addHeader(HttpHeaders.Names.LAST_MODIFIED, lastModifiedAt(entity));
+
+			response.setContentType(entity.getContentType());
+			response.setContent(ChannelBuffers.copiedBuffer(entity.getBytes(conf)));
+		} catch (Exception e) {
+			throw Exceptions.uncheck(e);
+		}
 	}
 
 	private String maxAgeCacheControl() {

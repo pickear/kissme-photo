@@ -46,7 +46,7 @@ public class DevelopmentPersistModule extends AbstractModule {
 
 			try {
 
-				Mongo mongo = new Mongo(new ServerAddress("192.168.1.20"), options);
+				Mongo mongo = new Mongo(new ServerAddress("192.168.1.96"), options);
 				return mongo.getDB("photos");
 			} catch (Exception e) {
 				throw new RuntimeException("Create mongo occur error!", e);
