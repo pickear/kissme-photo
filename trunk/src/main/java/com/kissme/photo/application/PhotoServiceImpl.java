@@ -6,6 +6,7 @@ import com.kissme.photo.domain.app.App;
 import com.kissme.photo.domain.app.AppExpireException;
 import com.kissme.photo.domain.photo.Photo;
 import com.kissme.photo.domain.photo.PhotoRepository;
+import com.kissme.photo.domain.photo.PhotoThumbConf;
 import com.kissme.photo.infrastructure.Page;
 
 /**
@@ -33,13 +34,14 @@ public class PhotoServiceImpl implements PhotoService {
 	}
 
 	@Override
-	public void save(Photo entity) {
+	public void save(Photo entity, PhotoThumbConf conf) {
 		App app = entity.getApp();
 		Preconditions.checkNotNull(app);
 		if (app.isExpire()) {
 			throw new AppExpireException();
 		}
-		photoRepository.save(entity);
+
+		photoRepository.save(entity, conf);
 	}
 
 	@Override

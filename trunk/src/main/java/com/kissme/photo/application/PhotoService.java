@@ -1,6 +1,7 @@
 package com.kissme.photo.application;
 
 import com.kissme.photo.domain.photo.Photo;
+import com.kissme.photo.domain.photo.PhotoThumbConf;
 import com.kissme.photo.infrastructure.Page;
 
 /**
@@ -35,5 +36,5 @@ public interface PhotoService {
 	 * 
 	 * @param entity
 	 */
-	void save(Photo entity);
+	void save(Photo entity, PhotoThumbConf conf);
 }

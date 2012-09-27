@@ -34,5 +34,5 @@ public interface PhotoRepository {
 	 * 
 	 * @param entity
 	 */
-	void save(Photo entity);
+	void save(Photo entity, PhotoThumbConf conf);
 }

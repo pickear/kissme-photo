@@ -2,14 +2,15 @@ package com.kissme.photo.infrastructure.http.multipart;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * 
  * @author loudyn
- *
+ * 
  */
 public interface MultipartRequestFile {
-	
+
 	/**
 	 * 
 	 * @return
@@ -46,6 +47,13 @@ public interface MultipartRequestFile {
 	 * @throws IOException
 	 */
 	byte[] getBytes() throws IOException;
+
+	/**
+	 * 
+	 * @return
+	 * @throws IOException
+	 */
+	InputStream getInputStream() throws IOException;
 
 	/**
 	 * 

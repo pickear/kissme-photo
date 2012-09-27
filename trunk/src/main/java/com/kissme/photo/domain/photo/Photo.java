@@ -1,5 +1,7 @@
 package com.kissme.photo.domain.photo;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -13,7 +15,7 @@ import com.kissme.photo.domain.gallery.Gallery;
  * @author loudyn
  * 
  */
-public class Photo extends AbstractDomain {
+public abstract class Photo extends AbstractDomain {
 
 	private static final long serialVersionUID = 1L;
 
@@ -24,7 +26,6 @@ public class Photo extends AbstractDomain {
 
 	private long length;
 	private Date lastModified;
-	private byte[] content;
 
 	@JsonIgnore
 	public Gallery getGallery() {
@@ -90,14 +91,17 @@ public class Photo extends AbstractDomain {
 		return this;
 	}
 
-	@JsonIgnore
-	public byte[] getContent() {
-		return content;
-	}
-
-	public Photo setContent(byte[] content) {
-		this.content = content;
-		return this;
-	}
-
+	/**
+	 * 
+	 * @return
+	 */
+	public abstract InputStream getInputStream(PhotoThumbConf conf) throws IOException;
+	
+	/**
+	 * 
+	 * @param conf
+	 * @return
+	 * @throws IOException
+	 */
+	public abstract byte[] getBytes(PhotoThumbConf conf) throws IOException;
 }
