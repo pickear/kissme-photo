@@ -226,7 +226,7 @@ public class Bootstrap {
 														.hasArg()
 														.isRequired(false)
 														.create("t");
-		Option chunksizeOpt = withArgName("chunksize").withDescription("max chunk size,default is " + setting.getChunkSize())
+		Option chunksizeOpt = withArgName("chunksize").withDescription("max chunk size,default is " + setting.getChunkSize() + " bytes")
 														.hasArg()
 														.isRequired(false)
 														.create("chunksize");
