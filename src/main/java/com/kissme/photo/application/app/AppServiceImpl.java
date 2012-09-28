@@ -1,10 +1,10 @@
-package com.kissme.photo.application;
+package com.kissme.photo.application.app;
 
 import com.google.inject.Inject;
+import com.kissme.photo.domain.Page;
 import com.kissme.photo.domain.app.App;
 import com.kissme.photo.domain.app.AppExistsException;
 import com.kissme.photo.domain.app.AppRepository;
-import com.kissme.photo.infrastructure.Page;
 
 /**
  * 
