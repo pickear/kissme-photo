@@ -307,7 +307,7 @@ public class Bootstrap {
 
 			server.bind(new InetSocketAddress(setting.getPort()));
 		} catch (Exception e) {
-			LOG.error("Bootstrap occur error.", e);
+			LOG.error(e.getMessage());
 			System.exit(1);
 		}
 
