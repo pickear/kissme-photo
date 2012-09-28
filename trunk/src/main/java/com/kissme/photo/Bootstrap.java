@@ -231,7 +231,7 @@ public class Bootstrap {
 														.isRequired(false)
 														.create("chunksize");
 
-		Option dbconfOpt = withArgName("dbconfpath").withDescription("db configure path")
+		Option dbconfOpt = withArgName("dbconfpath").withDescription("db configure path,it must be a utf-8 json file")
 													.hasArg()
 													.isRequired(false)
 													.create("dbconfpath");
