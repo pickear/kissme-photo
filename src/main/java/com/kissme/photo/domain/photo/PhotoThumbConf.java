@@ -67,11 +67,11 @@ public class PhotoThumbConf {
 	}
 
 	public boolean requiredRotate() {
-		return getRotate() > 0.0d && getRotate() <= 360.0d;
+		return getRotate() > 0.0d && getRotate() <= 360.0d && requiredResize();
 	}
 
 	public boolean requiredQuality() {
-		return getQuality() > 0f && getQuality() <= 1.0f;
+		return getQuality() > 0f && getQuality() <= 1.0f && requiredResize();
 	}
 
 	public boolean requiredCrop() {
