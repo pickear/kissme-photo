@@ -21,6 +21,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jboss.netty.bootstrap.ServerBootstrap;
+import org.jboss.netty.channel.ChannelFactory;
 import org.jboss.netty.channel.ChannelPipeline;
 import org.jboss.netty.channel.ChannelPipelineFactory;
 import org.jboss.netty.channel.Channels;
@@ -200,7 +201,7 @@ public class Bootstrap {
 
 				throw ExceptionUtils.oneThrow("Can't pass the authenticate!");
 			} catch (Exception e) {
-				throw ExceptionUtils.uncheck(e);
+				throw ExceptionUtils.oneThrow("Can't connect to the db!");
 			}
 		}
 
@@ -268,30 +269,29 @@ public class Bootstrap {
 			printHelp(options);
 			return;
 		}
-
-		List<Module> modules = Lists.newArrayList();
-		modules.add(new InterfacesModule());
-		modules.add(new ApplicationModule());
-		modules.add(new InfrastructureModule());
-		modules.add(new AbstractModule() {
-
-			@Override
-			protected void configure() {
-				bind(DB.class).toInstance(builder.build());
-			}
-		});
-
-		Ioc ioc = new GuiceIoc(modules);
-		final NettyRequestTransport transport = new NettyRequestTransport(ioc);
-
-		ServerBootstrap server = new ServerBootstrap(new NioServerSocketChannelFactory(
-																						Executors.newFixedThreadPool(setting.getMaxThreads()),
-																						Executors.newFixedThreadPool(setting.getMaxThreads())
-																					)
-													);
-
+		
 		try {
-
+			
+			List<Module> modules = Lists.newArrayList();
+			modules.add(new InterfacesModule());
+			modules.add(new ApplicationModule());
+			modules.add(new InfrastructureModule());
+			modules.add(new AbstractModule() {
+				
+				@Override
+				protected void configure() {
+					bind(DB.class).toInstance(builder.build());
+				}
+			});
+			
+			Ioc ioc = new GuiceIoc(modules);
+			final NettyRequestTransport transport = new NettyRequestTransport(ioc);
+			final ChannelFactory factory = new NioServerSocketChannelFactory(
+																				Executors.newFixedThreadPool(setting.getMaxThreads()),
+																				Executors.newFixedThreadPool(setting.getMaxThreads())
+																		);
+			
+			ServerBootstrap server = new ServerBootstrap(factory);
 			server.setPipelineFactory(new ChannelPipelineFactory() {
 
 				@Override
