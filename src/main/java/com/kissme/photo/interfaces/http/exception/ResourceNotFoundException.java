@@ -1,4 +1,4 @@
-package com.kissme.photo.interfaces.exception;
+package com.kissme.photo.interfaces.http.exception;
 
 import com.kissme.photo.infrastructure.http.annotation.ResponseStatus;
 

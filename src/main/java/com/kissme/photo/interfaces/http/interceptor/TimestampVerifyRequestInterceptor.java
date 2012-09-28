@@ -1,11 +1,11 @@
-package com.kissme.photo.interfaces.interceptor;
+package com.kissme.photo.interfaces.http.interceptor;
 
 import org.apache.commons.lang.StringUtils;
 import org.jboss.netty.handler.codec.http.HttpMethod;
 
 import com.google.common.base.Preconditions;
 import com.google.inject.Inject;
-import com.kissme.photo.application.TimestampService;
+import com.kissme.photo.application.timestamp.TimestampService;
 import com.kissme.photo.infrastructure.http.Request;
 import com.kissme.photo.infrastructure.http.RequestHandlerChain;
 import com.kissme.photo.infrastructure.http.RequestInterceptor;

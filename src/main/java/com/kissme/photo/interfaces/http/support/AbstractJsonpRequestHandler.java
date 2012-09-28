@@ -1,4 +1,4 @@
-package com.kissme.photo.interfaces;
+package com.kissme.photo.interfaces.http.support;
 
 import java.nio.charset.Charset;
 
@@ -8,7 +8,7 @@ import org.jboss.netty.buffer.ChannelBuffers;
 import com.kissme.photo.infrastructure.http.Request;
 import com.kissme.photo.infrastructure.http.RequestHandler;
 import com.kissme.photo.infrastructure.http.Response;
-import com.kissme.photo.interfaces.exception.BadRequestException;
+import com.kissme.photo.interfaces.http.exception.BadRequestException;
 
 /**
  * 
@@ -17,24 +17,20 @@ import com.kissme.photo.interfaces.exception.BadRequestException;
  */
 public abstract class AbstractJsonpRequestHandler implements RequestHandler {
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.youboy.photo.infrastructure.http.RequestHandler#handleRequest(com.youboy.photo.infrastructure.http.Request,
-	 * com.youboy.photo.infrastructure.http.Response)
-	 */
+	protected final static String CALLBACK_PARAM_NAME = "callback";
+
 	@Override
 	public final void handleRequest(Request request, Response response) {
-		String callback = request.getParameter("callback");
+		String callback = request.getParameter(CALLBACK_PARAM_NAME);
 		if (StringUtils.isBlank(callback)) {
 			throw new BadRequestException();
 		}
 
 		String contentString = doHandleRequest(request, response);
-		String callbackString = String.format("%s(%s)", callback, contentString);
-		
+		String jsonpString = String.format("%s(%s)", callback, contentString);
+
 		response.setContentType("application/json");
-		response.setContent(ChannelBuffers.copiedBuffer(callbackString, Charset.forName(request.getCharset())));
+		response.setContent(ChannelBuffers.copiedBuffer(jsonpString, Charset.forName(request.getCharset())));
 	}
 
 	/**
