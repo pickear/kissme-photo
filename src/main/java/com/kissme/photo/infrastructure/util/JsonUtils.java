@@ -1,4 +1,4 @@
-package com.kissme.photo.infrastructure;
+package com.kissme.photo.infrastructure.util;
 
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.DeserializationConfig;
@@ -8,7 +8,7 @@ import org.codehaus.jackson.map.SerializationConfig;
 /**
  * @author loudyn
  */
-public class Jsons {
+public abstract class JsonUtils {
 	private final static ObjectMapper mapper = new ObjectMapper();
 
 	static {
@@ -62,4 +62,5 @@ public class Jsons {
 		}
 	}
 
+	private JsonUtils() {}
 }

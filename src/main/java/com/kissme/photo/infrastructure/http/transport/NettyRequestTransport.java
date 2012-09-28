@@ -19,7 +19,7 @@ import org.jboss.netty.handler.codec.http.HttpVersion;
 import com.kissme.photo.infrastructure.http.DefaultRequestDispatcher;
 import com.kissme.photo.infrastructure.http.Request;
 import com.kissme.photo.infrastructure.http.Response;
-import com.kissme.photo.infrastructure.ioc.GuiceIoc;
+import com.kissme.photo.infrastructure.ioc.Ioc;
 
 /**
  * 
@@ -35,8 +35,8 @@ public class NettyRequestTransport extends SimpleChannelUpstreamHandler {
 	 * 
 	 * @param dispatcher
 	 */
-	public NettyRequestTransport() {
-		requestDispatcher = new DefaultRequestDispatcher(new GuiceIoc());
+	public NettyRequestTransport(Ioc ioc) {
+		requestDispatcher = new DefaultRequestDispatcher(ioc);
 	}
 
 	@Override
@@ -56,13 +56,8 @@ public class NettyRequestTransport extends SimpleChannelUpstreamHandler {
 			}
 		}
 
-		try {
-
-			prepareWritingResponse(request, response);
-			writeResponse(evt, request, response);
-		} finally {
-			completeRequest(ctx, evt, request, response);
-		}
+		prepareWritingResponse(request, response);
+		writeResponse(evt, request, response);
 	}
 
 	private Request prepareRequest(MessageEvent evt) {
@@ -100,8 +95,6 @@ public class NettyRequestTransport extends SimpleChannelUpstreamHandler {
 	private boolean isKeepAlive(Request request, Response response) {
 		return request.isKeepAlive() || response.isKeepAlive();
 	}
-
-	private void completeRequest(ChannelHandlerContext ctx, MessageEvent evt, Request request, Response response) {}
 
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, ExceptionEvent e) throws Exception {
