@@ -190,18 +190,24 @@ public class Bootstrap {
 
 				Mongo mongo = new Mongo(new ServerAddress(getAddress(), getPort()), options);
 				DB db = mongo.getDB(getDbname());
-
-				if (!requiredAuth()) {
-					return db;
+				if(requiredAuth()){
+					doDBAuth(db);
 				}
-
-				if (db.authenticate(getUsername(), getPassword().toCharArray())) {
-					return db;
+				
+				Exception e = db.getStats().getException();
+				if(null != e){
+					throw e;
 				}
-
-				throw ExceptionUtils.oneThrow("Can't pass the authenticate!");
+				
+				return db;
 			} catch (Exception e) {
-				throw ExceptionUtils.oneThrow("Can't connect to the db!");
+				throw ExceptionUtils.oneThrow("Can't connect to the db! error: " + e.getMessage());
+			}
+		}
+
+		private void doDBAuth(DB db) {
+			if(!db.authenticate(getUsername(), getPassword().toCharArray())){
+				throw ExceptionUtils.oneThrow("Can't authenticate the db,please check the username and password");
 			}
 		}
 
@@ -266,6 +272,7 @@ public class Bootstrap {
 			}
 
 		} catch (Exception e) {
+			LOG.error(e.getMessage());
 			printHelp(options);
 			return;
 		}
@@ -276,14 +283,18 @@ public class Bootstrap {
 			modules.add(new InterfacesModule());
 			modules.add(new ApplicationModule());
 			modules.add(new InfrastructureModule());
+			
+			// create the mongodb
+			final DB db = builder.build();
 			modules.add(new AbstractModule() {
 				
 				@Override
 				protected void configure() {
-					bind(DB.class).toInstance(builder.build());
+					bind(DB.class).toInstance(db);
 				}
 			});
 			
+			// create the ioc and netty http request transport
 			Ioc ioc = new GuiceIoc(modules);
 			final NettyRequestTransport transport = new NettyRequestTransport(ioc);
 			final ChannelFactory factory = new NioServerSocketChannelFactory(
@@ -342,7 +353,7 @@ public class Bootstrap {
 			Map<String, Object> jsonMap = JsonUtils.fromJsonString(jsonString, Map.class);
 			return JsonUtils.newfor(jsonMap, MongoDBBuilder.class);
 		} catch (Exception e) {
-			throw ExceptionUtils.uncheck(e);
+			throw ExceptionUtils.oneThrow("Can't open the dbconfpath,please check the filepath and make sure it is a utf-8 json file!");
 		}
 	}
 
