@@ -1,6 +1,6 @@
 package com.kissme.photo.domain.gallery;
 
-import com.kissme.photo.infrastructure.Page;
+import com.kissme.photo.domain.Page;
 
 /**
  * 
