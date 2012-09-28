@@ -1,8 +1,8 @@
-package com.kissme.photo.application;
+package com.kissme.photo.application.photo;
 
+import com.kissme.photo.domain.Page;
 import com.kissme.photo.domain.photo.Photo;
 import com.kissme.photo.domain.photo.PhotoThumbConf;
-import com.kissme.photo.infrastructure.Page;
 
 /**
  * 

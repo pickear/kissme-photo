@@ -1,4 +1,4 @@
-package com.kissme.photo.application;
+package com.kissme.photo.application.timestamp;
 
 import com.google.common.base.Preconditions;
 import com.google.inject.Inject;

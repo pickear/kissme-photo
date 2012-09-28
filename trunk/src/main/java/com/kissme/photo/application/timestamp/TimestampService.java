@@ -1,4 +1,4 @@
-package com.kissme.photo.application;
+package com.kissme.photo.application.timestamp;
 
 /**
  * 

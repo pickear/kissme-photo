@@ -1,7 +1,7 @@
-package com.kissme.photo.application;
+package com.kissme.photo.application.gallery;
 
+import com.kissme.photo.domain.Page;
 import com.kissme.photo.domain.gallery.Gallery;
-import com.kissme.photo.infrastructure.Page;
 
 /**
  * 
