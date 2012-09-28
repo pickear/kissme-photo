@@ -132,13 +132,13 @@ public class PhotoCreateRequestHandler extends AbstractJsonpRequestHandler {
 						boolean thumb = false;
 						Builder<? extends InputStream> builder = Thumbnails.of(file.getInputStream());
 
-						if (conf.requiredCrop()) {
-							builder.sourceRegion(conf.getCropX(), conf.getCropY(), conf.getWidth(), conf.getHeight());
+						if(conf.requiredResize()){
+							builder.size(conf.getWidth(), conf.getHeight());
 							thumb = true;
 						}
-
-						if (!conf.requiredCrop() && conf.requiredResize()) {
-							builder.size(conf.getWidth(), conf.getHeight());
+						
+						if (conf.requiredCrop()) {
+							builder.sourceRegion(conf.getCropX(), conf.getCropY(), conf.getWidth(), conf.getHeight());
 							thumb = true;
 						}
 
