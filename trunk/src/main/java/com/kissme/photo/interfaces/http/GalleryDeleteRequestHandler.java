@@ -1,24 +1,24 @@
-package com.kissme.photo.interfaces.gallery;
+package com.kissme.photo.interfaces.http;
 
 import org.jboss.netty.handler.codec.http.HttpMethod;
 
 import com.google.inject.Inject;
-import com.kissme.photo.application.GalleryService;
+import com.kissme.photo.application.gallery.GalleryService;
 import com.kissme.photo.infrastructure.http.Request;
 import com.kissme.photo.infrastructure.http.Response;
-import com.kissme.photo.interfaces.AbstractJsonpRequestHandler;
+import com.kissme.photo.interfaces.http.support.AbstractJsonpRequestHandler;
 
 /**
  * 
  * @author loudyn
  * 
  */
-public class DeleteGalleryRequestHandler extends AbstractJsonpRequestHandler {
+public class GalleryDeleteRequestHandler extends AbstractJsonpRequestHandler {
 
 	private GalleryService galleryService;
 
 	@Inject
-	public DeleteGalleryRequestHandler(GalleryService galleryService) {
+	public GalleryDeleteRequestHandler(GalleryService galleryService) {
 		this.galleryService = galleryService;
 	}
 

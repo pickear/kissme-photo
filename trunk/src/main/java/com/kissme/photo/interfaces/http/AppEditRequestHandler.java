@@ -1,26 +1,26 @@
-package com.kissme.photo.interfaces.app;
+package com.kissme.photo.interfaces.http;
 
 import org.jboss.netty.handler.codec.http.HttpMethod;
 
 import com.google.inject.Inject;
-import com.kissme.photo.application.AppService;
+import com.kissme.photo.application.app.AppService;
 import com.kissme.photo.domain.app.App;
-import com.kissme.photo.infrastructure.Jsons;
 import com.kissme.photo.infrastructure.http.Request;
 import com.kissme.photo.infrastructure.http.Response;
-import com.kissme.photo.interfaces.AbstractJsonpRequestHandler;
-import com.kissme.photo.interfaces.exception.ResourceNotFoundException;
+import com.kissme.photo.infrastructure.util.JsonUtils;
+import com.kissme.photo.interfaces.http.exception.ResourceNotFoundException;
+import com.kissme.photo.interfaces.http.support.AbstractJsonpRequestHandler;
 
 /**
  * 
  * @author loudyn
  * 
  */
-public class EditAppRequestHandler extends AbstractJsonpRequestHandler {
+public class AppEditRequestHandler extends AbstractJsonpRequestHandler {
 	private AppService appService;
 
 	@Inject
-	public EditAppRequestHandler(AppService appService) {
+	public AppEditRequestHandler(AppService appService) {
 		this.appService = appService;
 	}
 
@@ -42,6 +42,6 @@ public class EditAppRequestHandler extends AbstractJsonpRequestHandler {
 
 		entity.setName(request.getParameter("email")).setPhone(request.getParameter("phone"));
 		appService.update(entity);
-		return Jsons.toJsonString(entity);
+		return JsonUtils.toJsonString(entity);
 	}
 }

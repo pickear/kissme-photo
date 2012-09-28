@@ -1,17 +1,17 @@
 package com.kissme.photo.interfaces;
 
 import com.google.inject.AbstractModule;
-import com.kissme.photo.interfaces.app.CreateAppRequestHandler;
-import com.kissme.photo.interfaces.app.DeleteAppRequestHandler;
-import com.kissme.photo.interfaces.app.EditAppRequestHandler;
-import com.kissme.photo.interfaces.gallery.CreateGalleryRequestHandler;
-import com.kissme.photo.interfaces.gallery.DeleteGalleryRequestHandler;
-import com.kissme.photo.interfaces.gallery.EditGalleryRequestHandler;
-import com.kissme.photo.interfaces.gallery.QueryGalleryRequestHandler;
-import com.kissme.photo.interfaces.photo.CreatePhotoRequestHandler;
-import com.kissme.photo.interfaces.photo.DeletePhotoRequestHandler;
-import com.kissme.photo.interfaces.photo.GetPhotoRequestHandler;
-import com.kissme.photo.interfaces.photo.QueryPhotoRequestHandler;
+import com.kissme.photo.interfaces.http.AppCreateRequestHandler;
+import com.kissme.photo.interfaces.http.AppDeleteRequestHandler;
+import com.kissme.photo.interfaces.http.AppEditRequestHandler;
+import com.kissme.photo.interfaces.http.GalleryCreateRequestHandler;
+import com.kissme.photo.interfaces.http.GalleryDeleteRequestHandler;
+import com.kissme.photo.interfaces.http.GalleryEditRequestHandler;
+import com.kissme.photo.interfaces.http.GalleryQueryRequestHandler;
+import com.kissme.photo.interfaces.http.PhotoCreateRequestHandler;
+import com.kissme.photo.interfaces.http.PhotoDeleteRequestHandler;
+import com.kissme.photo.interfaces.http.PhotoGetRequestHandler;
+import com.kissme.photo.interfaces.http.PhotoQueryRequestHandler;
 
 /**
  * 
@@ -23,19 +23,19 @@ public class InterfacesModule extends AbstractModule {
 	@Override
 	protected void configure() {
 
-		bind(CreateAppRequestHandler.class).asEagerSingleton();
-		bind(EditAppRequestHandler.class).asEagerSingleton();
-		bind(DeleteAppRequestHandler.class).asEagerSingleton();
+		bind(AppCreateRequestHandler.class).asEagerSingleton();
+		bind(AppEditRequestHandler.class).asEagerSingleton();
+		bind(AppDeleteRequestHandler.class).asEagerSingleton();
 		
-		bind(CreateGalleryRequestHandler.class).asEagerSingleton();
-		bind(EditGalleryRequestHandler.class).asEagerSingleton();
-		bind(DeleteGalleryRequestHandler.class).asEagerSingleton();
-		bind(QueryGalleryRequestHandler.class).asEagerSingleton();
+		bind(GalleryCreateRequestHandler.class).asEagerSingleton();
+		bind(GalleryEditRequestHandler.class).asEagerSingleton();
+		bind(GalleryDeleteRequestHandler.class).asEagerSingleton();
+		bind(GalleryQueryRequestHandler.class).asEagerSingleton();
 
-		bind(GetPhotoRequestHandler.class).asEagerSingleton();
-		bind(CreatePhotoRequestHandler.class).asEagerSingleton();
-		bind(QueryPhotoRequestHandler.class).asEagerSingleton();
-		bind(DeletePhotoRequestHandler.class).asEagerSingleton();
+		bind(PhotoGetRequestHandler.class).asEagerSingleton();
+		bind(PhotoCreateRequestHandler.class).asEagerSingleton();
+		bind(PhotoQueryRequestHandler.class).asEagerSingleton();
+		bind(PhotoDeleteRequestHandler.class).asEagerSingleton();
 
 //		bind(TimestampVerifyRequestInterceptor.class).asEagerSingleton();
 //		bind(SignatureVerifyRequestInterceptor.class).asEagerSingleton();
