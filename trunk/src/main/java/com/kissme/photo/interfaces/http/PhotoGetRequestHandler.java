@@ -18,6 +18,7 @@ import com.kissme.photo.infrastructure.http.RequestHandler;
 import com.kissme.photo.infrastructure.http.Response;
 import com.kissme.photo.infrastructure.util.ExceptionUtils;
 import com.kissme.photo.infrastructure.util.JsonUtils;
+import com.kissme.photo.interfaces.http.exception.ResourceNotFoundException;
 
 /**
  * 
@@ -54,6 +55,10 @@ public class PhotoGetRequestHandler implements RequestHandler {
 
 			String id = request.getPathVariables().get("id");
 			Photo entity = galleryPhotoService.get(id);
+			if (null == entity) {
+				throw new ResourceNotFoundException();
+			}
+
 			PhotoThumbConf conf = JsonUtils.newfor(request.getParameterMap(), PhotoThumbConf.class);
 
 			response.addHeader(HttpHeaders.Names.CACHE_CONTROL, maxAgeCacheControl());
