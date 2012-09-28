@@ -1,6 +1,5 @@
 package com.kissme.photo.infrastructure.ioc;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -11,7 +10,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.Module;
-import com.kissme.photo.infrastructure.lookup.Lookups;
+import com.google.inject.Stage;
 
 /**
  * 
@@ -19,18 +18,14 @@ import com.kissme.photo.infrastructure.lookup.Lookups;
  * 
  */
 public class GuiceIoc implements Ioc {
-	private static Injector injector;
+	private Injector injector;
 
-	static {
-
-		final Iterator<Module> modules = Lookups.lookupMultiple(Module.class);
-		injector = Guice.createInjector(new Iterable<Module>() {
-
-			public Iterator<Module> iterator() {
-				return modules;
-			}
-
-		});
+	/**
+	 * 
+	 * @param modules
+	 */
+	public GuiceIoc(Iterable<Module> modules) {
+		injector = Guice.createInjector(Stage.PRODUCTION, modules);
 	}
 
 	/*

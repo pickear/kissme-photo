@@ -13,8 +13,8 @@ import org.bson.types.ObjectId;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
-import com.kissme.photo.infrastructure.Jsons;
-import com.kissme.photo.infrastructure.Page;
+import com.kissme.photo.domain.Page;
+import com.kissme.photo.infrastructure.util.JsonUtils;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
@@ -115,7 +115,7 @@ public abstract class MongoRepositorySupport<T, PK extends Serializable> {
 	 * @return
 	 */
 	protected T convertDBObject(DBObject obj) {
-		return Jsons.newfor(transformObjectIds(obj).toMap(), entityClazz);
+		return JsonUtils.newfor(transformObjectIds(obj).toMap(), entityClazz);
 	}
 
 	/**
@@ -224,7 +224,7 @@ public abstract class MongoRepositorySupport<T, PK extends Serializable> {
 	@SuppressWarnings("unchecked")
 	protected final Map<String, Object> describeAndFilterIds(T entity) {
 
-		Map<String, Object> describe = Jsons.newfor(entity, Map.class);
+		Map<String, Object> describe = JsonUtils.newfor(entity, Map.class);
 		return Maps.filterKeys(describe, new Predicate<String>() {
 
 			@Override

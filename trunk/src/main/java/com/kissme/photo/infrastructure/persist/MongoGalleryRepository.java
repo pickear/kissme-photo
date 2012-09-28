@@ -5,11 +5,11 @@ import java.util.Map;
 import org.bson.types.ObjectId;
 
 import com.google.inject.Inject;
+import com.kissme.photo.domain.Page;
 import com.kissme.photo.domain.app.App;
 import com.kissme.photo.domain.gallery.Gallery;
 import com.kissme.photo.domain.gallery.GalleryRepository;
-import com.kissme.photo.infrastructure.Jsons;
-import com.kissme.photo.infrastructure.Page;
+import com.kissme.photo.infrastructure.util.JsonUtils;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBObject;
@@ -38,9 +38,9 @@ public class MongoGalleryRepository extends MongoRepositorySupport<Gallery, Stri
 
 		DBRef ref = (DBRef) obj.removeField(getCollectionName(App.class));
 		DBObject refObj = ref.fetch();
-		App app = Jsons.newfor(transformObjectIds(refObj).toMap(), App.class);
+		App app = JsonUtils.newfor(transformObjectIds(refObj).toMap(), App.class);
 
-		return Jsons.newfor(transformObjectIds(obj).toMap(), Gallery.class).setApp(app);
+		return JsonUtils.newfor(transformObjectIds(obj).toMap(), Gallery.class).setApp(app);
 	}
 
 	@Override

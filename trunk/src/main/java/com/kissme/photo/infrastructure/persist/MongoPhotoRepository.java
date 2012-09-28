@@ -17,12 +17,12 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
+import com.kissme.photo.domain.Page;
 import com.kissme.photo.domain.gallery.Gallery;
 import com.kissme.photo.domain.photo.Photo;
 import com.kissme.photo.domain.photo.PhotoRepository;
 import com.kissme.photo.domain.photo.PhotoThumbConf;
-import com.kissme.photo.infrastructure.Exceptions;
-import com.kissme.photo.infrastructure.Page;
+import com.kissme.photo.infrastructure.util.ExceptionUtils;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
@@ -109,7 +109,7 @@ public class MongoPhotoRepository extends MongoRepositorySupport<Photo, String> 
 			entity.setLastModified(file.getUploadDate()).setMd5(file.getMD5()).setId(file.getId().toString());
 			getGfsCollection().ensureIndex(new BasicDBObject("md5", 1), "md5", true);
 		} catch (Exception e) {
-			throw Exceptions.uncheck(e);
+			throw ExceptionUtils.uncheck(e);
 		}
 
 	}
