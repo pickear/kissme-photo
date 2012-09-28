@@ -201,13 +201,14 @@ public class Bootstrap {
 				
 				return db;
 			} catch (Exception e) {
-				throw ExceptionUtils.oneThrow("Can't connect to the db! error: " + e.getMessage());
+				String msg = String.format("Can't connect to the db(error:%s)! use the -dbconfpath arg to overwrite the default db conf.", e.getMessage());
+				throw ExceptionUtils.oneThrow(msg);
 			}
 		}
 
 		private void doDBAuth(DB db) {
 			if(!db.authenticate(getUsername(), getPassword().toCharArray())){
-				throw ExceptionUtils.oneThrow("Can't authenticate the db,please check the username and password");
+				throw ExceptionUtils.oneThrow("db authenticate fail");
 			}
 		}
 
