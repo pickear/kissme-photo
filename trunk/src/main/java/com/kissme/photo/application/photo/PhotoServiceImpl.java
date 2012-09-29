@@ -1,13 +1,13 @@
 package com.kissme.photo.application.photo;
 
-import com.google.common.base.Preconditions;
 import com.google.inject.Inject;
 import com.kissme.photo.domain.Page;
-import com.kissme.photo.domain.app.App;
-import com.kissme.photo.domain.app.AppExpireException;
+import com.kissme.photo.domain.gallery.Gallery;
+import com.kissme.photo.domain.gallery.GalleryRepository;
 import com.kissme.photo.domain.photo.Photo;
 import com.kissme.photo.domain.photo.PhotoRepository;
 import com.kissme.photo.domain.photo.PhotoThumbConf;
+import com.kissme.photo.infrastructure.util.ExceptionUtils;
 
 /**
  * 
@@ -16,11 +16,18 @@ import com.kissme.photo.domain.photo.PhotoThumbConf;
  */
 public class PhotoServiceImpl implements PhotoService {
 
+	private GalleryRepository galleryRepository;
 	private PhotoRepository photoRepository;
 
 	@Inject
-	public PhotoServiceImpl(PhotoRepository photoRepository) {
+	public PhotoServiceImpl(GalleryRepository galleryRepository, PhotoRepository photoRepository) {
+		this.galleryRepository = galleryRepository;
 		this.photoRepository = photoRepository;
+	}
+
+	@Override
+	public Page<Photo> findPage(Page<Photo> page) {
+		return photoRepository.findPage(page);
 	}
 
 	@Override
@@ -35,12 +42,6 @@ public class PhotoServiceImpl implements PhotoService {
 
 	@Override
 	public void save(Photo entity, PhotoThumbConf conf) {
-		App app = entity.getApp();
-		Preconditions.checkNotNull(app);
-		if (app.isExpire()) {
-			throw new AppExpireException();
-		}
-
 		photoRepository.save(entity, conf);
 	}
 
@@ -49,4 +50,23 @@ public class PhotoServiceImpl implements PhotoService {
 		return photoRepository.get(id);
 	}
 
+	@Override
+	public void deleteByAppAndId(String appId, String id) {
+		String galleryId = photoRepository.getGalleryId(id);
+		Gallery gallery = galleryRepository.get(appId, galleryId);
+		if (null == gallery) {
+			throw ExceptionUtils.oneThrow("bad photoId with appId");
+		}
+
+		photoRepository.delete(id);
+	}
+
+	@Override
+	public Page<Photo> findPageByAppAndGallery(String appId, String galleryId, Page<Photo> page) {
+		Gallery gallery = galleryRepository.get(appId, galleryId);
+		if (null == gallery) {
+			throw ExceptionUtils.oneThrow("bad galleryId with appId");
+		}
+		return findPageByGallery(galleryId, page);
+	}
 }

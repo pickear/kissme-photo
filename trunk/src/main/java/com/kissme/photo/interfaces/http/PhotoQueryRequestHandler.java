@@ -5,26 +5,28 @@ import org.jboss.netty.handler.codec.http.HttpMethod;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
+import com.kissme.photo.application.app.AppService;
 import com.kissme.photo.application.photo.PhotoService;
 import com.kissme.photo.domain.Page;
+import com.kissme.photo.domain.app.App;
 import com.kissme.photo.domain.photo.Photo;
 import com.kissme.photo.infrastructure.http.Request;
 import com.kissme.photo.infrastructure.http.Response;
 import com.kissme.photo.infrastructure.util.JsonUtils;
 import com.kissme.photo.interfaces.http.exception.BadRequestException;
-import com.kissme.photo.interfaces.http.support.AbstractJsonpRequestHandler;
 
 /**
  * 
  * @author loudyn
  * 
  */
-public class PhotoQueryRequestHandler extends AbstractJsonpRequestHandler {
+public class PhotoQueryRequestHandler extends AbstractAppRequiredRequestHandler {
 
 	private PhotoService galleryPhotoService;
 
 	@Inject
-	public PhotoQueryRequestHandler(PhotoService galleryPhotoService) {
+	public PhotoQueryRequestHandler(AppService appService, PhotoService galleryPhotoService) {
+		super(appService);
 		this.galleryPhotoService = galleryPhotoService;
 	}
 
@@ -40,7 +42,7 @@ public class PhotoQueryRequestHandler extends AbstractJsonpRequestHandler {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected String doHandleRequest(Request request, Response response) {
+	protected String doHandleAppRequest(App app, Request request, Response response) {
 		String galleryId = request.getParameter("gallery");
 		if (StringUtils.isBlank(galleryId)) {
 			throw new BadRequestException();
@@ -52,7 +54,7 @@ public class PhotoQueryRequestHandler extends AbstractJsonpRequestHandler {
 			page.getParams().put("filename", ImmutableMap.of("$regex", ".*?" + query + ".*"));
 		}
 
-		page = galleryPhotoService.findPageByGallery(galleryId, page);
+		page = galleryPhotoService.findPageByAppAndGallery(app.getId(), galleryId, page);
 		return JsonUtils.toJsonString(page);
 	}
 }

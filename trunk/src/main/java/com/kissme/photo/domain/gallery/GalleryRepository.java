@@ -5,7 +5,7 @@ import com.kissme.photo.domain.Page;
 /**
  * 
  * @author loudyn
- *
+ * 
  */
 public interface GalleryRepository {
 
@@ -20,9 +20,10 @@ public interface GalleryRepository {
 	/**
 	 * 
 	 * @param id
+	 * @param id2
 	 * @return
 	 */
-	Gallery get(String id);
+	Gallery get(String appId, String id);
 
 	/**
 	 * 
@@ -36,4 +37,10 @@ public interface GalleryRepository {
 	 */
 	void delete(String id);
 
+	/**
+	 * 
+	 * @param page
+	 * @return
+	 */
+	Page<Gallery> findPage(Page<Gallery> page);
 }

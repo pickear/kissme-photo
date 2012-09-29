@@ -1,29 +1,29 @@
 package com.kissme.photo.interfaces.http;
 
-import org.apache.commons.lang.StringUtils;
 import org.jboss.netty.handler.codec.http.HttpMethod;
 
 import com.google.inject.Inject;
+import com.kissme.photo.application.app.AppService;
 import com.kissme.photo.application.gallery.GalleryService;
 import com.kissme.photo.domain.Page;
+import com.kissme.photo.domain.app.App;
 import com.kissme.photo.domain.gallery.Gallery;
 import com.kissme.photo.infrastructure.http.Request;
 import com.kissme.photo.infrastructure.http.Response;
 import com.kissme.photo.infrastructure.util.JsonUtils;
-import com.kissme.photo.interfaces.http.exception.BadRequestException;
-import com.kissme.photo.interfaces.http.support.AbstractJsonpRequestHandler;
 
 /**
  * 
  * @author loudyn
  * 
  */
-public class GalleryQueryRequestHandler extends AbstractJsonpRequestHandler {
+public class GalleryQueryRequestHandler extends AbstractAppRequiredRequestHandler {
 
 	private GalleryService galleryService;
 
 	@Inject
-	public GalleryQueryRequestHandler(GalleryService galleryService) {
+	public GalleryQueryRequestHandler(AppService appService, GalleryService galleryService) {
+		super(appService);
 		this.galleryService = galleryService;
 	}
 
@@ -39,14 +39,9 @@ public class GalleryQueryRequestHandler extends AbstractJsonpRequestHandler {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected String doHandleRequest(Request request, Response response) {
-		String app = request.getParameter("app");
-		if (StringUtils.isBlank(app)) {
-			throw new BadRequestException();
-		}
-
+	protected String doHandleAppRequest(App app, Request request, Response response) {
 		Page<Gallery> page = JsonUtils.newfor(request.getParameterMap(), Page.class);
-		page = galleryService.findPageByApp(app, page);
+		page = galleryService.findPageByApp(app.getId(), page);
 		return JsonUtils.toJsonString(page);
 	}
 }

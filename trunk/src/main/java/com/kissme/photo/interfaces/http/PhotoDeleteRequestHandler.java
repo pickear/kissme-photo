@@ -3,23 +3,25 @@ package com.kissme.photo.interfaces.http;
 import org.jboss.netty.handler.codec.http.HttpMethod;
 
 import com.google.inject.Inject;
+import com.kissme.photo.application.app.AppService;
 import com.kissme.photo.application.photo.PhotoService;
+import com.kissme.photo.domain.app.App;
 import com.kissme.photo.infrastructure.http.Request;
 import com.kissme.photo.infrastructure.http.Response;
-import com.kissme.photo.interfaces.http.support.AbstractJsonpRequestHandler;
 
 /**
  * 
  * @author loudyn
  * 
  */
-public class PhotoDeleteRequestHandler extends AbstractJsonpRequestHandler {
+public class PhotoDeleteRequestHandler extends AbstractAppRequiredRequestHandler {
 
-	private PhotoService galleryPhotoService;
+	private PhotoService photoService;
 
 	@Inject
-	public PhotoDeleteRequestHandler(PhotoService galleryPhotoService) {
-		this.galleryPhotoService = galleryPhotoService;
+	public PhotoDeleteRequestHandler(AppService appService, PhotoService photoService) {
+		super(appService);
+		this.photoService = photoService;
 	}
 
 	@Override
@@ -33,10 +35,9 @@ public class PhotoDeleteRequestHandler extends AbstractJsonpRequestHandler {
 	}
 
 	@Override
-	protected String doHandleRequest(Request request, Response response) {
+	protected String doHandleAppRequest(App app, Request request, Response response) {
 		String id = request.getPathVariables().get("id");
-		galleryPhotoService.delete(id);
+		photoService.deleteByAppAndId(app.getId(), id);
 		return "{\"status\":\"ok\"}";
 	}
-
 }
