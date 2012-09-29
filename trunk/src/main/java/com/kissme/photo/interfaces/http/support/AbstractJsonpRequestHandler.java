@@ -22,6 +22,7 @@ public abstract class AbstractJsonpRequestHandler implements RequestHandler {
 	public final void handleRequest(Request request, Response response) {
 
 		String contentString = doHandleRequest(request, response);
+		
 		String callback = request.getParameter(CALLBACK_PARAM_NAME);
 		String jsonString = contentString;
 		if (StringUtils.isNotBlank(callback)) {
