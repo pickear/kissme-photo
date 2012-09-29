@@ -15,7 +15,7 @@ import com.google.common.base.Preconditions;
  * @author loudyn
  * 
  */
-public abstract class FileUtils {
+public final class FileUtils {
 
 	public static final String UNIX_SEPERATOR = "/";
 	public static final String WINDOW_SEPERATOR = "\\";

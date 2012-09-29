@@ -17,7 +17,7 @@ import com.google.common.base.Preconditions;
  * @author loudyn
  * 
  */
-public class SignatureUtils {
+public final class SignatureUtils {
 	private final static String MAC_NAME = "HmacSHA1";
 
 	/**

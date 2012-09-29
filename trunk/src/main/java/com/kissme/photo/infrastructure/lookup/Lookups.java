@@ -8,7 +8,7 @@ import java.util.ServiceLoader;
  * @author loudyn
  * 
  */
-public abstract class Lookups {
+public final class Lookups {
 
 	/**
 	 * 
