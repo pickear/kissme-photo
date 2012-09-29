@@ -100,6 +100,7 @@ public class App extends AbstractDomain {
 	 * 
 	 * @return
 	 */
+	@JsonIgnore
 	public boolean isExpire() {
 		return System.currentTimeMillis() > getKeys().getExpireTime();
 	}
