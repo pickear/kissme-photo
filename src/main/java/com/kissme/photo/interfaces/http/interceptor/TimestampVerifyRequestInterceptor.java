@@ -43,18 +43,12 @@ public class TimestampVerifyRequestInterceptor implements RequestInterceptor {
 		return 0;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.kissme.photo.infrastructure.http.RequestInterceptor#intercept(com.kissme.photo.infrastructure.http.Request,
-	 * com.kissme.photo.infrastructure.http.Response, com.kissme.photo.infrastructure.http.RequestHandlerChain)
-	 */
 	public void intercept(Request request, Response response, RequestHandlerChain handlerChain) {
 
  		if (shouldIntercept(request)) {
 			String timestamp = getTimestampString(request);
 			verifyTimestamp(timestamp);
-			preventRepalyAttack(timestamp);
+			preventReplayAttack(timestamp);
 		}
 
 		handlerChain.handle(request, response);
@@ -78,7 +72,7 @@ public class TimestampVerifyRequestInterceptor implements RequestInterceptor {
 			throw new InvalidTimestampException();
 		}
 
-		if (existsTimestamp(timestamp)) {
+		if (isExistsTimestamp(timestamp)) {
 			throw new InvalidTimestampException();
 		}
 	}
@@ -110,11 +104,11 @@ public class TimestampVerifyRequestInterceptor implements RequestInterceptor {
 		return System.currentTimeMillis();
 	}
 
-	private boolean existsTimestamp(String timestamp) {
+	private boolean isExistsTimestamp(String timestamp) {
 		return timestampService.existsTimestamp(timestamp);
 	}
 
-	private void preventRepalyAttack(String timestamp) {
+	private void preventReplayAttack(String timestamp) {
 		timestampService.save(timestamp);
 	}
 
