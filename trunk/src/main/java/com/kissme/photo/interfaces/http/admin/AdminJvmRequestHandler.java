@@ -21,7 +21,7 @@ public class AdminJvmRequestHandler extends AbstractAdminRequestHandler {
 
 	@Override
 	public HttpMethod[] getMappingMethods() {
-		return new HttpMethod[] { HttpMethod.GET };
+		return new HttpMethod[] { HttpMethod.GET, HttpMethod.POST };
 	}
 
 	@Override
