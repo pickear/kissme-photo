@@ -51,7 +51,11 @@ public class MongoPhotoRepository extends MongoRepositorySupport<Photo, String> 
 
 	@Override
 	public Page<Photo> findPage(Page<Photo> page) {
-		DBCursor cursor = getGfsCollection().find(transformQuery(page)).skip(page.getFirst() - 1).limit(page.getPageSize());
+		
+		DBCursor cursor = getGfsCollection().find(transformQuery(page))
+											.sort(new BasicDBObject("uploadDate", -1))
+											.skip(page.getFirst() - 1)
+											.limit(page.getPageSize());
 
 		List<Photo> result = Lists.newLinkedList();
 		while (cursor.hasNext()) {
@@ -115,6 +119,7 @@ public class MongoPhotoRepository extends MongoRepositorySupport<Photo, String> 
 
 			entity.setLastModified(file.getUploadDate()).setMd5(file.getMD5()).setId(file.getId().toString());
 			getGfsCollection().ensureIndex(new BasicDBObject("md5", 1), "md5", true);
+			getGfsCollection().ensureIndex(new BasicDBObject("uploadDate", -1), "uploadDate", false);
 		} catch (Exception e) {
 			throw ExceptionUtils.uncheck(e);
 		}
@@ -131,13 +136,13 @@ public class MongoPhotoRepository extends MongoRepositorySupport<Photo, String> 
 
 		return new GfsPhotoFileAdapter(file);
 	}
-	
-	public String getGalleryId(String id){
+
+	public String getGalleryId(String id) {
 		GridFSDBFile file = getGfs().findOne(new ObjectId(id));
 		if (null == file) {
 			return null;
 		}
-		
+
 		DBRef ref = (DBRef) file.getMetaData().get(getCollectionName(Gallery.class));
 		return ref.getId().toString();
 	}
