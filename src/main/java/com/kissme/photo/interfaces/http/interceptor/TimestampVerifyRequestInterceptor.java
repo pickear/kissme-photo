@@ -63,7 +63,7 @@ public class TimestampVerifyRequestInterceptor implements RequestInterceptor {
 	}
 
 	private boolean isGetPhotoRequest(Request request) {
-		return request.getPath().startsWith("/photo/") && request.getMethod() == HttpMethod.GET;
+		return request.getPath().matches("/photo/[0-9a-zA-Z]+") && request.getMethod() == HttpMethod.GET;
 	}
 
 	private void verifyTimestamp(String timestamp) {
