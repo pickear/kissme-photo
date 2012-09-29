@@ -8,7 +8,7 @@ import org.codehaus.jackson.map.SerializationConfig;
 /**
  * @author loudyn
  */
-public abstract class JsonUtils {
+public final class JsonUtils {
 	private final static ObjectMapper mapper = new ObjectMapper();
 
 	static {

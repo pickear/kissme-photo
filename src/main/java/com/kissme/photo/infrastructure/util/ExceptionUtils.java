@@ -10,7 +10,13 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-public class ExceptionUtils {
+/**
+ * 
+ * @author loudyn
+ * 
+ */
+public final class ExceptionUtils {
+
 	/**
 	 * 
 	 * @return
@@ -199,6 +205,7 @@ public class ExceptionUtils {
 
 			return result.toArray(new StackTraceElement[] {});
 		}
-
 	}
+
+	private ExceptionUtils() {}
 }

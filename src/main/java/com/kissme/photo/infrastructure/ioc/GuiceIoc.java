@@ -17,7 +17,7 @@ import com.google.inject.Stage;
  * @author loudyn
  * 
  */
-public class GuiceIoc implements Ioc {
+public final class GuiceIoc implements Ioc {
 	private Injector injector;
 
 	/**
