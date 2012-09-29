@@ -12,18 +12,11 @@ public interface GalleryService {
 
 	/**
 	 * 
-	 * @param app
-	 * @param page
-	 * @return
-	 */
-	Page<Gallery> findPageByApp(String app, Page<Gallery> page);
-
-	/**
-	 * 
+	 * @param appId
 	 * @param id
 	 * @return
 	 */
-	Gallery get(String id);
+	Gallery getByAppAndId(String appId, String id);
 
 	/**
 	 * 
@@ -36,4 +29,27 @@ public interface GalleryService {
 	 * @param id
 	 */
 	void delete(String id);
+
+	/**
+	 * 
+	 * @param appId
+	 * @param id
+	 */
+	void deleteByAppAndId(String appId, String id);
+
+	/**
+	 * 
+	 * @param page
+	 * @return
+	 */
+	Page<Gallery> findPage(Page<Gallery> page);
+
+	/**
+	 * 
+	 * @param app
+	 * @param page
+	 * @return
+	 */
+	Page<Gallery> findPageByApp(String app, Page<Gallery> page);
+
 }

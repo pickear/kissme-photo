@@ -2,8 +2,10 @@ package com.kissme.photo.infrastructure.persist;
 
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.bson.types.ObjectId;
 
+import com.google.common.base.Preconditions;
 import com.google.inject.Inject;
 import com.kissme.photo.domain.Page;
 import com.kissme.photo.domain.app.App;
@@ -29,6 +31,7 @@ public class MongoGalleryRepository extends MongoRepositorySupport<Gallery, Stri
 
 	@Override
 	public Page<Gallery> findPageByApp(String appId, Page<Gallery> page) {
+		Preconditions.checkArgument(StringUtils.isNotBlank(appId));
 		page.getParams().put("app.$id", new ObjectId(appId));
 		return findPage(page);
 	}
@@ -60,8 +63,16 @@ public class MongoGalleryRepository extends MongoRepositorySupport<Gallery, Stri
 	}
 
 	@Override
+	public Gallery get(String appId, String id) {
+		BasicDBObject obj = new BasicDBObject();
+		obj.put("app.$id", new ObjectId(appId));
+		obj.put("_id", new ObjectId(id));
+		DBObject result = getCollection().findOne(obj);
+		return convertDBObject(result);
+	}
+
+	@Override
 	public void delete(String id) {
 		getCollection().remove(new BasicDBObject("_id", new ObjectId(id)));
 	}
-
 }

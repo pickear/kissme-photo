@@ -19,8 +19,10 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
+import com.kissme.photo.application.app.AppService;
 import com.kissme.photo.application.gallery.GalleryService;
 import com.kissme.photo.application.photo.PhotoService;
+import com.kissme.photo.domain.app.App;
 import com.kissme.photo.domain.gallery.Gallery;
 import com.kissme.photo.domain.photo.Photo;
 import com.kissme.photo.domain.photo.PhotoThumbConf;
@@ -32,21 +34,21 @@ import com.kissme.photo.infrastructure.util.FileUtils;
 import com.kissme.photo.infrastructure.util.FileUtils.FileType;
 import com.kissme.photo.infrastructure.util.JsonUtils;
 import com.kissme.photo.interfaces.http.exception.BadRequestException;
-import com.kissme.photo.interfaces.http.support.AbstractJsonpRequestHandler;
 
 /**
  * 
  * @author loudyn
  * 
  */
-public class PhotoCreateRequestHandler extends AbstractJsonpRequestHandler {
+public class PhotoCreateRequestHandler extends AbstractAppRequiredRequestHandler {
 
 	private static final ImmutableList<FileType> ACCEPT_FILE_TYPES = ImmutableList.of(FileType.BMP, FileType.GIF, FileType.ICO, FileType.JPG, FileType.PNG);
 	private PhotoService photoService;
 	private GalleryService galleryService;
 
 	@Inject
-	public PhotoCreateRequestHandler(GalleryService galleryService, PhotoService photoService) {
+	public PhotoCreateRequestHandler(AppService appService, GalleryService galleryService, PhotoService photoService) {
+		super(appService);
 		this.galleryService = galleryService;
 		this.photoService = photoService;
 	}
@@ -62,14 +64,13 @@ public class PhotoCreateRequestHandler extends AbstractJsonpRequestHandler {
 	}
 
 	@Override
-	protected String doHandleRequest(Request request, Response response) {
-
+	protected String doHandleAppRequest(App app, Request request, Response response) {
 		String galleryId = request.getParameter("gallery");
 		if (StringUtils.isBlank(galleryId)) {
 			throw new BadRequestException();
 		}
 
-		final Gallery gallery = galleryService.get(galleryId);
+		final Gallery gallery = galleryService.getByAppAndId(app.getId(), galleryId);
 		if (null == gallery) {
 			throw new BadRequestException();
 		}
@@ -132,11 +133,11 @@ public class PhotoCreateRequestHandler extends AbstractJsonpRequestHandler {
 						boolean thumb = false;
 						Builder<? extends InputStream> builder = Thumbnails.of(file.getInputStream());
 
-						if(conf.requiredResize()){
+						if (conf.requiredResize()) {
 							builder.size(conf.getWidth(), conf.getHeight());
 							thumb = true;
 						}
-						
+
 						if (conf.requiredCrop()) {
 							builder.sourceRegion(conf.getCropX(), conf.getCropY(), conf.getWidth(), conf.getHeight());
 							thumb = true;
@@ -171,7 +172,7 @@ public class PhotoCreateRequestHandler extends AbstractJsonpRequestHandler {
 
 		return JsonUtils.toJsonString(result);
 	}
-
+	
 	class PhotoCreateResult {
 		private int success = 0;
 		private int failure = 0;

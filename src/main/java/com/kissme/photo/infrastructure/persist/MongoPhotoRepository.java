@@ -12,9 +12,11 @@ import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.Thumbnails.Builder;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang.StringUtils;
 import org.bson.types.ObjectId;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.kissme.photo.domain.Page;
@@ -48,9 +50,7 @@ public class MongoPhotoRepository extends MongoRepositorySupport<Photo, String> 
 	}
 
 	@Override
-	public Page<Photo> findPageByGallery(String galleryId, Page<Photo> page) {
-
-		page.getParams().put("metadata.gallery.$id", new ObjectId(galleryId));
+	public Page<Photo> findPage(Page<Photo> page) {
 		DBCursor cursor = getGfsCollection().find(transformQuery(page)).skip(page.getFirst() - 1).limit(page.getPageSize());
 
 		List<Photo> result = Lists.newLinkedList();
@@ -60,6 +60,13 @@ public class MongoPhotoRepository extends MongoRepositorySupport<Photo, String> 
 		}
 
 		return page.setTotalCount(cursor.count()).setResult(result);
+	}
+
+	@Override
+	public Page<Photo> findPageByGallery(String galleryId, Page<Photo> page) {
+		Preconditions.checkArgument(StringUtils.isNotBlank(galleryId));
+		page.getParams().put("metadata.gallery.$id", new ObjectId(galleryId));
+		return findPage(page);
 	}
 
 	private DBCollection getGfsCollection() {
@@ -124,6 +131,16 @@ public class MongoPhotoRepository extends MongoRepositorySupport<Photo, String> 
 
 		return new GfsPhotoFileAdapter(file);
 	}
+	
+	public String getGalleryId(String id){
+		GridFSDBFile file = getGfs().findOne(new ObjectId(id));
+		if (null == file) {
+			return null;
+		}
+		
+		DBRef ref = (DBRef) file.getMetaData().get(getCollectionName(Gallery.class));
+		return ref.getId().toString();
+	}
 
 	class GfsPhotoFileAdapter extends Photo {
 		private static final long serialVersionUID = 1L;
@@ -174,12 +191,12 @@ public class MongoPhotoRepository extends MongoRepositorySupport<Photo, String> 
 		public byte[] getBytes(PhotoThumbConf conf) throws IOException {
 			boolean thumb = false;
 			Builder<? extends InputStream> builder = Thumbnails.of(gfsFile.getInputStream());
-			
-			if(conf.requiredResize()){
+
+			if (conf.requiredResize()) {
 				builder.size(conf.getWidth(), conf.getHeight());
 				thumb = true;
 			}
-			
+
 			if (conf.requiredCrop()) {
 				builder.sourceRegion(conf.getCropX(), conf.getCropY(), conf.getWidth(), conf.getHeight());
 				thumb = true;

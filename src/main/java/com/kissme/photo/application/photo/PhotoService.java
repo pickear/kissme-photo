@@ -27,6 +27,13 @@ public interface PhotoService {
 
 	/**
 	 * 
+	 * @param appId
+	 * @param id
+	 */
+	void deleteByAppAndId(String appId, String id);
+
+	/**
+	 * 
 	 * @param id
 	 * @return
 	 */
@@ -37,4 +44,21 @@ public interface PhotoService {
 	 * @param entity
 	 */
 	void save(Photo entity, PhotoThumbConf conf);
+
+	/**
+	 * 
+	 * @param page
+	 * @return
+	 */
+	Page<Photo> findPage(Page<Photo> page);
+
+	/**
+	 * 
+	 * @param appId
+	 * @param galleryId
+	 * @param page
+	 * @return
+	 */
+	Page<Photo> findPageByAppAndGallery(String appId, String galleryId, Page<Photo> page);
+
 }

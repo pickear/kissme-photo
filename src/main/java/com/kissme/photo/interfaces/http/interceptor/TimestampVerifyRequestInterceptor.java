@@ -51,7 +51,7 @@ public class TimestampVerifyRequestInterceptor implements RequestInterceptor {
 	 */
 	public void intercept(Request request, Response response, RequestHandlerChain handlerChain) {
 
-		if (shouldIntercept(request)) {
+ 		if (shouldIntercept(request)) {
 			String timestamp = getTimestampString(request);
 			verifyTimestamp(timestamp);
 			preventRepalyAttack(timestamp);
@@ -61,18 +61,11 @@ public class TimestampVerifyRequestInterceptor implements RequestInterceptor {
 	}
 
 	private boolean shouldIntercept(Request request) {
-		if (isCreateAppRequest(request)) {
-			return false;
-		}
 
 		if (isGetPhotoRequest(request)) {
 			return false;
 		}
 		return true;
-	}
-
-	private boolean isCreateAppRequest(Request request) {
-		return request.getPath().startsWith("/app/") && request.getMethod() == HttpMethod.POST;
 	}
 
 	private boolean isGetPhotoRequest(Request request) {

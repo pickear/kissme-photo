@@ -23,13 +23,18 @@ public class GalleryServiceImpl implements GalleryService {
 	}
 
 	@Override
+	public Page<Gallery> findPage(Page<Gallery> page) {
+		return galleryRepository.findPage(page);
+	}
+
+	@Override
 	public Page<Gallery> findPageByApp(String app, Page<Gallery> page) {
 		return galleryRepository.findPageByApp(app, page);
 	}
 
 	@Override
-	public Gallery get(String id) {
-		return galleryRepository.get(id);
+	public Gallery getByAppAndId(String appId, String id) {
+		return galleryRepository.get(appId, id);
 	}
 
 	@Override
@@ -48,4 +53,11 @@ public class GalleryServiceImpl implements GalleryService {
 		galleryRepository.delete(id);
 	}
 
+	@Override
+	public void deleteByAppAndId(String appId, String id) {
+		Gallery entity = galleryRepository.get(appId, id);
+		if (null != entity) {
+			galleryRepository.delete(id);
+		}
+	}
 }

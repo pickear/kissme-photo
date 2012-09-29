@@ -62,7 +62,7 @@ public class Bootstrap {
 		public int getPort() {
 			return port;
 		}
-
+		
 		public void port(int port) {
 			this.port = port;
 		}
@@ -299,7 +299,7 @@ public class Bootstrap {
 			Ioc ioc = new GuiceIoc(modules);
 			final NettyRequestTransport transport = new NettyRequestTransport(ioc);
 			final ChannelFactory factory = new NioServerSocketChannelFactory(
-																				Executors.newFixedThreadPool(setting.getMaxThreads()),
+																				Executors.newCachedThreadPool(),
 																				Executors.newFixedThreadPool(setting.getMaxThreads())
 																		);
 			

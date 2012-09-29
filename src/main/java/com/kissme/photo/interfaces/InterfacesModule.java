@@ -1,9 +1,6 @@
 package com.kissme.photo.interfaces;
 
 import com.google.inject.AbstractModule;
-import com.kissme.photo.interfaces.http.AppCreateRequestHandler;
-import com.kissme.photo.interfaces.http.AppDeleteRequestHandler;
-import com.kissme.photo.interfaces.http.AppEditRequestHandler;
 import com.kissme.photo.interfaces.http.GalleryCreateRequestHandler;
 import com.kissme.photo.interfaces.http.GalleryDeleteRequestHandler;
 import com.kissme.photo.interfaces.http.GalleryEditRequestHandler;
@@ -12,6 +9,14 @@ import com.kissme.photo.interfaces.http.PhotoCreateRequestHandler;
 import com.kissme.photo.interfaces.http.PhotoDeleteRequestHandler;
 import com.kissme.photo.interfaces.http.PhotoGetRequestHandler;
 import com.kissme.photo.interfaces.http.PhotoQueryRequestHandler;
+import com.kissme.photo.interfaces.http.admin.AdminAppCreateRequestHandler;
+import com.kissme.photo.interfaces.http.admin.AdminAppDeleteRequestHandler;
+import com.kissme.photo.interfaces.http.admin.AdminAppQueryRequestHandler;
+import com.kissme.photo.interfaces.http.admin.AdminGalleryDeleteRequestHandler;
+import com.kissme.photo.interfaces.http.admin.AdminGalleryQueryRequestHandler;
+import com.kissme.photo.interfaces.http.admin.AdminPhotoDeleteRequestHandler;
+import com.kissme.photo.interfaces.http.admin.AdminPhotoQueryRequestHandler;
+import com.kissme.photo.interfaces.http.interceptor.TimestampVerifyRequestInterceptor;
 
 /**
  * 
@@ -23,10 +28,14 @@ public class InterfacesModule extends AbstractModule {
 	@Override
 	protected void configure() {
 
-		bind(AppCreateRequestHandler.class).asEagerSingleton();
-		bind(AppEditRequestHandler.class).asEagerSingleton();
-		bind(AppDeleteRequestHandler.class).asEagerSingleton();
-		
+		bind(AdminAppCreateRequestHandler.class).asEagerSingleton();
+		bind(AdminAppDeleteRequestHandler.class).asEagerSingleton();
+		bind(AdminAppQueryRequestHandler.class).asEagerSingleton();
+		bind(AdminGalleryDeleteRequestHandler.class).asEagerSingleton();
+		bind(AdminGalleryQueryRequestHandler.class).asEagerSingleton();
+		bind(AdminPhotoDeleteRequestHandler.class).asEagerSingleton();
+		bind(AdminPhotoQueryRequestHandler.class).asEagerSingleton();
+
 		bind(GalleryCreateRequestHandler.class).asEagerSingleton();
 		bind(GalleryEditRequestHandler.class).asEagerSingleton();
 		bind(GalleryDeleteRequestHandler.class).asEagerSingleton();
@@ -37,8 +46,7 @@ public class InterfacesModule extends AbstractModule {
 		bind(PhotoQueryRequestHandler.class).asEagerSingleton();
 		bind(PhotoDeleteRequestHandler.class).asEagerSingleton();
 
-//		bind(TimestampVerifyRequestInterceptor.class).asEagerSingleton();
-//		bind(SignatureVerifyRequestInterceptor.class).asEagerSingleton();
+		bind(TimestampVerifyRequestInterceptor.class).asEagerSingleton();
 	}
 
 }
