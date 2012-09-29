@@ -111,8 +111,6 @@ public final class SignatureUtils {
 
 			try {
 
-				// HmacSHA1 signature baseString , then encode as base64
-				// so we must decode the signature as base64
 				byte[] signatueBytes = Hex.decodeHex(signature.toCharArray());
 				byte[] calculateBytes = doFinal(raw.getBytes());
 				if (!Arrays.equals(signatueBytes, calculateBytes)) {
