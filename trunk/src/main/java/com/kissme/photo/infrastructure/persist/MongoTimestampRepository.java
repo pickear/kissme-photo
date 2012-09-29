@@ -1,5 +1,6 @@
 package com.kissme.photo.infrastructure.persist;
 
+import com.google.common.base.Preconditions;
 import com.google.inject.Inject;
 import com.kissme.photo.domain.timestamp.TimestampRepository;
 import com.mongodb.BasicDBObject;
@@ -18,7 +19,7 @@ public class MongoTimestampRepository implements TimestampRepository {
 
 	@Inject
 	public MongoTimestampRepository(DB db) {
-
+		Preconditions.checkNotNull(db);
 		if (db.collectionExists(COLLECTION_NAME)) {
 			this.collection = db.getCollection(COLLECTION_NAME);
 		}
@@ -31,6 +32,7 @@ public class MongoTimestampRepository implements TimestampRepository {
 	@Override
 	public void save(String timestamp) {
 		this.collection.save(new BasicDBObject("ts", timestamp));
+		this.collection.ensureIndex(new BasicDBObject("ts", timestamp), "ts", true);
 	}
 
 	@Override
