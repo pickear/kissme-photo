@@ -32,7 +32,7 @@ public class SignatureUtils {
 
 		try {
 
-			SecretKeySpec key = new SecretKeySpec(secret.getBytes("UTF-8"), MAC_NAME);
+			SecretKeySpec key = createHmacKey(secret);
 			return new HMACSHA1Verifier(key).signature(raw);
 		} catch (Exception e) {
 			throw ExceptionUtils.uncheck(e);
@@ -54,11 +54,15 @@ public class SignatureUtils {
 
 		try {
 
-			SecretKeySpec key = new SecretKeySpec(secret.getBytes("UTF-8"), MAC_NAME);
+			SecretKeySpec key = createHmacKey(secret);
 			new HMACSHA1Verifier(key).verify(raw, toVerify);
 		} catch (Exception e) {
 			throw ExceptionUtils.uncheck(e);
 		}
+	}
+
+	private static SecretKeySpec createHmacKey(String secret) {
+		return new SecretKeySpec(secret.getBytes(), MAC_NAME);
 	}
 
 	/**
@@ -87,7 +91,7 @@ public class SignatureUtils {
 			this.key = key;
 		}
 
-		public String signature(String raw) {
+		String signature(String raw) {
 			try {
 
 				byte[] calculateBytes = doFinal(raw.getBytes());
@@ -103,14 +107,14 @@ public class SignatureUtils {
 			return mac.doFinal(signatueBytes);
 		}
 
-		public void verify(String signatureBaseString, String signature) {
+		void verify(String raw, String signature) {
 
 			try {
 
 				// HmacSHA1 signature baseString , then encode as base64
 				// so we must decode the signature as base64
 				byte[] signatueBytes = Hex.decodeHex(signature.toCharArray());
-				byte[] calculateBytes = doFinal(signatureBaseString.getBytes());
+				byte[] calculateBytes = doFinal(raw.getBytes());
 				if (!Arrays.equals(signatueBytes, calculateBytes)) {
 					throw new InvalidSignatueException();
 				}
