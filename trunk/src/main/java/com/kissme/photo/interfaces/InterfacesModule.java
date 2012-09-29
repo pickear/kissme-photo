@@ -14,6 +14,7 @@ import com.kissme.photo.interfaces.http.admin.AdminAppDeleteRequestHandler;
 import com.kissme.photo.interfaces.http.admin.AdminAppQueryRequestHandler;
 import com.kissme.photo.interfaces.http.admin.AdminGalleryDeleteRequestHandler;
 import com.kissme.photo.interfaces.http.admin.AdminGalleryQueryRequestHandler;
+import com.kissme.photo.interfaces.http.admin.AdminJvmRequestHandler;
 import com.kissme.photo.interfaces.http.admin.AdminPhotoDeleteRequestHandler;
 import com.kissme.photo.interfaces.http.admin.AdminPhotoQueryRequestHandler;
 import com.kissme.photo.interfaces.http.interceptor.TimestampVerifyRequestInterceptor;
@@ -28,6 +29,7 @@ public class InterfacesModule extends AbstractModule {
 	@Override
 	protected void configure() {
 
+		bind(AdminJvmRequestHandler.class).asEagerSingleton();
 		bind(AdminAppCreateRequestHandler.class).asEagerSingleton();
 		bind(AdminAppDeleteRequestHandler.class).asEagerSingleton();
 		bind(AdminAppQueryRequestHandler.class).asEagerSingleton();
