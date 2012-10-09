@@ -39,7 +39,7 @@ public class AdminAppCreateRequestHandler extends AbstractAdminRequestHandler {
 
 	@Override
 	protected String doHandleAdminRequest(Request request, Response response) {
-		App entity = JsonUtils.newfor(request.getParameterMap(), App.class);
+		App entity = JsonUtils.newfor(request.params(), App.class);
 		appService.save(entity.createKeys().expireAfterYears(1));
 		return JsonUtils.toJsonString(entity);
 	}

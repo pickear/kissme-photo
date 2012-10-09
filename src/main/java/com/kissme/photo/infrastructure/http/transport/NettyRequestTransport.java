@@ -74,7 +74,7 @@ public class NettyRequestTransport extends SimpleChannelUpstreamHandler {
 			response.addHeader("Access-Control-Allow-Origin", "*");
 		}
 
-		response.setCharset(request.getCharset());
+		response.setCharset(request.charset());
 		response.setHeader(HttpHeaders.Names.CONTENT_TYPE, response.getContentType());
 		response.setHeader(HttpHeaders.Names.CONTENT_LENGTH, response.getContent().readableBytes());
 	}

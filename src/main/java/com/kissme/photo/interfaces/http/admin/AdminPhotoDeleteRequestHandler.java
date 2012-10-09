@@ -35,7 +35,7 @@ public class AdminPhotoDeleteRequestHandler extends AbstractAdminRequestHandler 
 	protected String doHandleAdminRequest(Request request, Response response) {
 		try {
 
-			String id = request.getPathVariables().get("id");
+			String id = request.pathVariable("id");
 			photoService.delete(id);
 			return "{\"status\":\"ok\"}";
 		} catch (Exception e) {

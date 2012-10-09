@@ -65,7 +65,7 @@ public class PhotoCreateRequestHandler extends AbstractAppRequiredRequestHandler
 
 	@Override
 	protected String doHandleAppRequest(App app, Request request, Response response) {
-		String galleryId = request.getParameter("gallery");
+		String galleryId = request.param("gallery");
 		if (StringUtils.isBlank(galleryId)) {
 			throw new BadRequestException();
 		}
@@ -76,7 +76,7 @@ public class PhotoCreateRequestHandler extends AbstractAppRequiredRequestHandler
 		}
 
 		MultipartRequest mpr = (MultipartRequest) request;
-		Iterator<MultipartRequestFile> files = Iterators.filter(mpr.getFileMap().values().iterator(), new Predicate<MultipartRequestFile>() {
+		Iterator<MultipartRequestFile> files = Iterators.filter(mpr.files().values().iterator(), new Predicate<MultipartRequestFile>() {
 
 			@Override
 			public boolean apply(MultipartRequestFile input) {
@@ -91,7 +91,7 @@ public class PhotoCreateRequestHandler extends AbstractAppRequiredRequestHandler
 			}
 		});
 
-		PhotoThumbConf conf = JsonUtils.newfor(request.getParameterMap(), PhotoThumbConf.class);
+		PhotoThumbConf conf = JsonUtils.newfor(request.params(), PhotoThumbConf.class);
 		PhotoCreateResult result = new PhotoCreateResult();
 
 		while (files.hasNext()) {

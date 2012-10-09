@@ -40,14 +40,14 @@ public class AdminGalleryQueryRequestHandler extends AbstractAdminRequestHandler
 	@Override
 	@SuppressWarnings("unchecked")
 	protected String doHandleAdminRequest(Request request, Response response) {
-		Page<Gallery> page = JsonUtils.newfor(request.getParameterMap(), Page.class);
+		Page<Gallery> page = JsonUtils.newfor(request.params(), Page.class);
 
-		String appId = request.getParameter("appId");
+		String appId = request.param("appId");
 		if (StringUtils.isNotBlank(appId)) {
 			page.getParams().put("app.$id", new ObjectId(appId));
 		}
 
-		String name = request.getParameter("name");
+		String name = request.param("name");
 		if (StringUtils.isNotBlank(name) && StringUtils.isNotBlank(appId)) {
 			page.getParams().put("name", ImmutableMap.of("$regex", ".*?" + name + ".*"));
 		}

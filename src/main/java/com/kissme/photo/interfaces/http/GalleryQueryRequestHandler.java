@@ -40,7 +40,7 @@ public class GalleryQueryRequestHandler extends AbstractAppRequiredRequestHandle
 	@SuppressWarnings("unchecked")
 	@Override
 	protected String doHandleAppRequest(App app, Request request, Response response) {
-		Page<Gallery> page = JsonUtils.newfor(request.getParameterMap(), Page.class);
+		Page<Gallery> page = JsonUtils.newfor(request.params(), Page.class);
 		page = galleryService.findPageByApp(app.getId(), page);
 		return JsonUtils.toJsonString(page);
 	}

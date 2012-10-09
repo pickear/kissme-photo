@@ -36,8 +36,14 @@ public class PhotoDeleteRequestHandler extends AbstractAppRequiredRequestHandler
 
 	@Override
 	protected String doHandleAppRequest(App app, Request request, Response response) {
-		String id = request.getPathVariables().get("id");
-		photoService.deleteByAppAndId(app.getId(), id);
-		return "{\"status\":\"ok\"}";
+
+		try {
+
+			String id = request.pathVariable("id");
+			photoService.deleteByAppAndId(app.getId(), id);
+			return "{\"status\":\"ok\"}";
+		} catch (Exception e) {
+			return String.format("{\"status\":\"fail\",\"msg\":\"%s\"}", e.getMessage());
+		}
 	}
 }

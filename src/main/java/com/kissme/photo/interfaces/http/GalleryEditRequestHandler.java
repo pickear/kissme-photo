@@ -39,14 +39,14 @@ public class GalleryEditRequestHandler extends AbstractAppRequiredRequestHandler
 
 	@Override
 	protected String doHandleAppRequest(App app, Request request, Response response) {
-		String id = request.getPathVariables().get("id");
+		String id = request.pathVariable("id");
 		Gallery entity = galleryService.getByAppAndId(app.getId(), id);
 
 		if (null == entity) {
 			throw new ResourceNotFoundException();
 		}
 
-		galleryService.save(entity.setName(request.getParameter("name")));
+		galleryService.save(entity.setName(request.param("name")));
 		return JsonUtils.toJsonString(entity);
 	}
 }

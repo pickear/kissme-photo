@@ -23,14 +23,14 @@ public abstract class AbstractJsonpRequestHandler implements RequestHandler {
 
 		String contentString = doHandleRequest(request, response);
 		
-		String callback = request.getParameter(CALLBACK_PARAM_NAME);
+		String callback = request.param(CALLBACK_PARAM_NAME);
 		String jsonString = contentString;
 		if (StringUtils.isNotBlank(callback)) {
 			jsonString = String.format("%s(%s)", callback, jsonString);
 		}
 
 		response.setContentType("application/json");
-		response.setContent(ChannelBuffers.copiedBuffer(jsonString, Charset.forName(request.getCharset())));
+		response.setContent(ChannelBuffers.copiedBuffer(jsonString, Charset.forName(request.charset())));
 	}
 
 	/**

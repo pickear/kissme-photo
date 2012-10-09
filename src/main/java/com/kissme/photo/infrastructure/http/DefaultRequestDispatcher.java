@@ -143,12 +143,12 @@ public class DefaultRequestDispatcher {
 
 	private RequestHandlerChain getHandler(Request request) {
 		enhanceBrowserBehaviourIfPossiable(request);
-		RequestHandler handler = requestHandlerMapping.getHandler(request.getMethod(), request.getPath(), request.getPathVariables());
+		RequestHandler handler = requestHandlerMapping.getHandler(request.getMethod(), request.path(), request.pathVariables());
 		return prepareRequestHandlerChain(handler);
 	}
 
 	private void enhanceBrowserBehaviourIfPossiable(Request request) {
-		String hiddenMethod = request.getParameter("_method");
+		String hiddenMethod = request.param("_method");
 		if (HttpMethod.POST == request.getMethod() && ENHANCE_METHODS.contains(StringUtils.lowerCase(hiddenMethod))) {
 			request.setMethod(HttpMethod.valueOf(hiddenMethod));
 		}
@@ -164,7 +164,7 @@ public class DefaultRequestDispatcher {
 
 	private void notHandlerFound(Request request, Response response) {
 		response.sendError(404);
-		response.setContent(ChannelBuffers.copiedBuffer("No handler found!", Charset.forName(request.getCharset())));
+		response.setContent(ChannelBuffers.copiedBuffer("No handler found!", Charset.forName(request.charset())));
 	}
 
 	private void handleException(Request request, Response response, Exception e) {
@@ -172,12 +172,12 @@ public class DefaultRequestDispatcher {
 		RequestExceptionCode code = requestExceptionTranslator.translate(e);
 		if (null != code) {
 			response.sendError(code.getCode());
-			response.setContent(ChannelBuffers.copiedBuffer(code.getMessage(), Charset.forName(request.getCharset())));
+			response.setContent(ChannelBuffers.copiedBuffer(code.getMessage(), Charset.forName(request.charset())));
 			return;
 		}
 
 		response.sendError(500);
-		response.setContent(ChannelBuffers.copiedBuffer(e.getMessage(), Charset.forName(request.getCharset())));
+		response.setContent(ChannelBuffers.copiedBuffer(e.getMessage(), Charset.forName(request.charset())));
 	}
 
 	private void cleanupMultipart(Request request) {

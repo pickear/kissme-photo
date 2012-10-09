@@ -53,13 +53,13 @@ public class PhotoGetRequestHandler implements RequestHandler {
 		// e... there is something wrong..
 		try {
 
-			String id = request.getPathVariables().get("id");
+			String id = request.pathVariables().get("id");
 			Photo entity = galleryPhotoService.get(id);
 			if (null == entity) {
 				throw new ResourceNotFoundException();
 			}
 
-			PhotoThumbConf conf = JsonUtils.newfor(request.getParameterMap(), PhotoThumbConf.class);
+			PhotoThumbConf conf = JsonUtils.newfor(request.params(), PhotoThumbConf.class);
 
 			response.addHeader(HttpHeaders.Names.CACHE_CONTROL, maxAgeCacheControl());
 			response.addHeader(HttpHeaders.Names.EXPIRES, expiresAt(entity));

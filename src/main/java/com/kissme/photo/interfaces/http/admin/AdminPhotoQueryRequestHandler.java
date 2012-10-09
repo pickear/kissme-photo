@@ -39,13 +39,13 @@ public class AdminPhotoQueryRequestHandler extends AbstractAdminRequestHandler {
 	@SuppressWarnings("unchecked")
 	@Override
 	protected String doHandleAdminRequest(Request request, Response response) {
-		Page<Photo> page = JsonUtils.newfor(request.getParameterMap(), Page.class);
-		String id = request.getParameter("id");
+		Page<Photo> page = JsonUtils.newfor(request.params(), Page.class);
+		String id = request.param("id");
 		if (StringUtils.isNotBlank(id)) {
 			page.getParams().put("_id", new ObjectId(id));
 		}
 
-		String galleryId = request.getParameter("galleryId");
+		String galleryId = request.param("galleryId");
 		if (StringUtils.isNotBlank(galleryId)) {
 			page.getParams().put("metadata.gallery.$id", new ObjectId(galleryId));
 		}

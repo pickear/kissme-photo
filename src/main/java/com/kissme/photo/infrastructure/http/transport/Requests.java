@@ -47,7 +47,7 @@ abstract class Requests {
 			}
 		}));
 
-		nettyRequest.setCharset(ONLY_ACCEPT_CHARSET);
+		nettyRequest.charset(ONLY_ACCEPT_CHARSET);
 		return nettyRequest;
 	}
 
@@ -164,17 +164,17 @@ abstract class Requests {
 		}
 
 		@Override
-		public String getParameter(String name) {
+		public String param(String name) {
 			return params.get(name);
 		}
 
 		@Override
-		public Map<String, String> getParameterMap() {
+		public Map<String, String> params() {
 			return Collections.unmodifiableMap(params);
 		}
 
 		@Override
-		public Map<String, String> getPathVariables() {
+		public Map<String, String> pathVariables() {
 			return pathVariables;
 		}
 	}
