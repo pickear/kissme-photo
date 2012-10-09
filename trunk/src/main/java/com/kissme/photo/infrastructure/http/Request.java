@@ -1,5 +1,6 @@
 package com.kissme.photo.infrastructure.http;
 
+import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -130,15 +131,15 @@ public abstract class Request implements HttpRequest {
 		this.httpRequest.setUri(uri);
 	}
 
-	public String getPath() {
-		return new QueryStringDecoder(getUri()).getPath();
+	public String path() {
+		return new QueryStringDecoder(getUri(), Charset.forName(charset)).getPath();
 	}
 
 	/**
 	 * 
 	 * @return
 	 */
-	public String getCharset() {
+	public String charset() {
 		return this.charset;
 	}
 
@@ -146,26 +147,127 @@ public abstract class Request implements HttpRequest {
 	 * 
 	 * @param charset
 	 */
-	public void setCharset(String charset) {
+	public void charset(String charset) {
 		this.charset = charset;
 	}
-	
+
 	/**
 	 * 
 	 * @param name
 	 * @return
 	 */
-	public abstract String getParameter(String name);
+	public String param(String name) {
+		return params().get(name);
+	}
+
+	/**
+	 * 
+	 * @param name
+	 * @return
+	 */
+	public int paramAsInt(String name) {
+		return Integer.parseInt(param(name));
+	}
+
+	/**
+	 * 
+	 * @param name
+	 * @return
+	 */
+	public float paramAsFloat(String name) {
+		return Float.parseFloat(param(name));
+	}
+
+	/**
+	 * 
+	 * @param name
+	 * @return
+	 */
+	public long paramAsLong(String name) {
+		return Long.parseLong(param(name));
+	}
+
+	/**
+	 * 
+	 * @param name
+	 * @return
+	 */
+	public double paramAsDouble(String name) {
+		return Double.parseDouble(param(name));
+	}
+
+	/**
+	 * 
+	 * @param name
+	 * @return
+	 */
+	public boolean paramAsBoolean(String name) {
+		return Boolean.parseBoolean(param(name));
+	}
 
 	/**
 	 * 
 	 * @return
 	 */
-	public abstract Map<String, String> getParameterMap();
+	public abstract Map<String, String> params();
+
+	/**
+	 * 
+	 * @param name
+	 * @return
+	 */
+	public String pathVariable(String name) {
+		return pathVariables().get(name);
+	}
+
+	/**
+	 * 
+	 * @param name
+	 * @return
+	 */
+	public int pathVariableAsInt(String name) {
+		return Integer.parseInt(pathVariable(name));
+	}
+
+	/**
+	 * 
+	 * @param name
+	 * @return
+	 */
+	public float pathVariableAsFloat(String name) {
+		return Float.parseFloat(pathVariable(name));
+	}
+
+	/**
+	 * 
+	 * @param name
+	 * @return
+	 */
+	public long pathVariableAsLong(String name) {
+		return Long.parseLong(pathVariable(name));
+	}
+
+	/**
+	 * 
+	 * @param name
+	 * @return
+	 */
+	public double pathVariableAsDouble(String name) {
+		return Double.parseDouble(pathVariable(name));
+	}
+
+	/**
+	 * 
+	 * @param name
+	 * @return
+	 */
+	public boolean pathVariableAsBoolean(String name) {
+		return Boolean.parseBoolean(pathVariable(name));
+	}
 
 	/**
 	 * 
 	 * @return
 	 */
-	public abstract Map<String, String> getPathVariables();
+	public abstract Map<String, String> pathVariables();
 }

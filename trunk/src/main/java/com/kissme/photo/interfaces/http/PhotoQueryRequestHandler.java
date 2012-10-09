@@ -43,13 +43,13 @@ public class PhotoQueryRequestHandler extends AbstractAppRequiredRequestHandler 
 	@SuppressWarnings("unchecked")
 	@Override
 	protected String doHandleAppRequest(App app, Request request, Response response) {
-		String galleryId = request.getParameter("gallery");
+		String galleryId = request.param("gallery");
 		if (StringUtils.isBlank(galleryId)) {
 			throw new BadRequestException();
 		}
 
-		Page<Photo> page = JsonUtils.newfor(request.getParameterMap(), Page.class);
-		String query = request.getParameter("q");
+		Page<Photo> page = JsonUtils.newfor(request.params(), Page.class);
+		String query = request.param("q");
 		if (StringUtils.isNotBlank(query)) {
 			page.getParams().put("filename", ImmutableMap.of("$regex", ".*?" + query + ".*"));
 		}

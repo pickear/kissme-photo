@@ -18,8 +18,8 @@ public abstract class AbstractAdminRequestHandler extends AbstractJsonpRequestHa
 
 	@Override
 	protected final String doHandleRequest(Request request, Response response) {
-		String signature = request.getParameter("signature");
-		String timestamp = request.getParameter("timestamp");
+		String signature = request.param("signature");
+		String timestamp = request.param("timestamp");
 		if (StringUtils.isBlank(signature) || StringUtils.isBlank(timestamp)) {
 			throw new BadRequestException();
 		}

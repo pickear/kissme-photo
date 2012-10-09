@@ -40,19 +40,19 @@ public class AdminAppQueryRequestHandler extends AbstractAdminRequestHandler {
 	@SuppressWarnings("unchecked")
 	@Override
 	protected String doHandleAdminRequest(Request request, Response response) {
-		Page<App> page = JsonUtils.newfor(request.getParameterMap(), Page.class);
+		Page<App> page = JsonUtils.newfor(request.params(), Page.class);
 
-		String id = request.getParameter("id");
+		String id = request.param("id");
 		if (StringUtils.isNotBlank(id)) {
 			page.getParams().put("_id", new ObjectId(id));
 		}
 
-		String appkey = request.getParameter("appkey");
+		String appkey = request.param("appkey");
 		if (StringUtils.isNotBlank(appkey)) {
 			page.getParams().put("keys.appKey", appkey);
 		}
 
-		String name = request.getParameter("name");
+		String name = request.param("name");
 		if (StringUtils.isNotBlank(name)) {
 			page.getParams().put("name", ImmutableMap.of("$regex", ".*?" + name + ".*"));
 		}

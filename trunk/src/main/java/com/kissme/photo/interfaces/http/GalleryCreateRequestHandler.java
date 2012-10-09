@@ -36,7 +36,7 @@ public class GalleryCreateRequestHandler extends AbstractAppRequiredRequestHandl
 
 	@Override
 	protected String doHandleAppRequest(App app, Request request, Response response) {
-		Gallery entity = JsonUtils.newfor(request.getParameterMap(), Gallery.class);
+		Gallery entity = JsonUtils.newfor(request.params(), Gallery.class);
 		galleryService.save(entity.setApp(app));
 		return JsonUtils.toJsonString(entity);
 	}

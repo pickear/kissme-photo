@@ -100,7 +100,7 @@ public class CommonsMultipartRequestResolver implements MultipartRequestResolver
 	}
 
 	private String determineCharset(Request request) {
-		String charset = request.getCharset();
+		String charset = request.charset();
 		if (StringUtils.isBlank(charset)) {
 			throw new IllegalStateException("None charsetEncoding found on request!");
 		}
@@ -158,7 +158,7 @@ public class CommonsMultipartRequestResolver implements MultipartRequestResolver
 	 */
 	public void cleanupMultipart(MultipartRequest request) {
 		if (null != request) {
-			cleanupMultipartFiles(request.getFileMap());
+			cleanupMultipartFiles(request.files());
 		}
 	}
 
@@ -195,25 +195,23 @@ public class CommonsMultipartRequestResolver implements MultipartRequestResolver
 		private Map<String, MultipartRequestFile> multipartFiles;
 		private Map<String, String> params;
 
-		private final Map<String, String> pathVariables = Maps.newConcurrentMap();
-
 		public CommonsNettyMultipartHttpRequest(Request delegate) {
 			super(delegate);
 			initializeValues();
 		}
 
 		@Override
-		public Iterator<String> getFileFieldNames() {
+		public Iterator<String> fileFields() {
 			return multipartFiles.keySet().iterator();
 		}
 
 		@Override
-		public MultipartRequestFile getFile(String fieldName) {
-			return getFileMap().get(fieldName);
+		public MultipartRequestFile file(String fieldName) {
+			return files().get(fieldName);
 		}
 
 		@Override
-		public Map<String, MultipartRequestFile> getFileMap() {
+		public Map<String, MultipartRequestFile> files() {
 			return Collections.unmodifiableMap(multipartFiles);
 		}
 
@@ -226,12 +224,7 @@ public class CommonsMultipartRequestResolver implements MultipartRequestResolver
 		}
 
 		@Override
-		public String getParameter(String name) {
-			return params.get(name);
-		}
-
-		@Override
-		public Map<String, String> getParameterMap() {
+		public Map<String, String> params() {
 			return Collections.unmodifiableMap(params);
 		}
 
@@ -241,11 +234,6 @@ public class CommonsMultipartRequestResolver implements MultipartRequestResolver
 		 */
 		protected void setParameterMap(Map<String, String> params) {
 			this.params = params;
-		}
-
-		@Override
-		public Map<String, String> getPathVariables() {
-			return pathVariables;
 		}
 
 		protected abstract void initializeValues();

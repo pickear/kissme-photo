@@ -36,8 +36,14 @@ public class GalleryDeleteRequestHandler extends AbstractAppRequiredRequestHandl
 
 	@Override
 	protected String doHandleAppRequest(App app, Request request, Response response) {
-		String id = request.getPathVariables().get("id");
-		galleryService.deleteByAppAndId(app.getId(), id);
-		return "{\"status\":\"ok\"}";
+
+		try {
+
+			String id = request.pathVariable("id");
+			galleryService.deleteByAppAndId(app.getId(), id);
+			return "{\"status\":\"ok\"}";
+		} catch (Exception e) {
+			return String.format("{\"status\":\"fail\",\"msg\":\"%s\"}", e.getMessage());
+		}
 	}
 }

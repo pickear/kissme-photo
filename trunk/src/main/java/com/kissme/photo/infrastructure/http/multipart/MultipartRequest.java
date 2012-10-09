@@ -148,36 +148,88 @@ public abstract class MultipartRequest extends Request {
 	}
 
 	@Override
-	public String getPath() {
-		return delegate.getPath();
+	public String path() {
+		return delegate.path();
 	}
 
 	@Override
-	public String getCharset() {
-		return delegate.getCharset();
+	public String charset() {
+		return delegate.charset();
 	}
 
 	@Override
-	public void setCharset(String charset) {
-		delegate.setCharset(charset);
+	public void charset(String charset) {
+		delegate.charset(charset);
+	}
+
+	public String param(String name) {
+		return delegate.param(name);
+	}
+
+	public int paramAsInt(String name) {
+		return delegate.paramAsInt(name);
+	}
+
+	public float paramAsFloat(String name) {
+		return delegate.paramAsFloat(name);
+	}
+
+	public long paramAsLong(String name) {
+		return delegate.paramAsLong(name);
+	}
+
+	public double paramAsDouble(String name) {
+		return delegate.paramAsDouble(name);
+	}
+
+	public boolean paramAsBoolean(String name) {
+		return delegate.paramAsBoolean(name);
+	}
+
+	public String pathVariable(String name) {
+		return delegate.pathVariable(name);
+	}
+
+	public int pathVariableAsInt(String name) {
+		return delegate.pathVariableAsInt(name);
+	}
+
+	public float pathVariableAsFloat(String name) {
+		return delegate.pathVariableAsFloat(name);
+	}
+
+	public long pathVariableAsLong(String name) {
+		return delegate.pathVariableAsLong(name);
+	}
+
+	public double pathVariableAsDouble(String name) {
+		return delegate.pathVariableAsDouble(name);
+	}
+
+	public boolean pathVariableAsBoolean(String name) {
+		return delegate.pathVariableAsBoolean(name);
+	}
+
+	public Map<String, String> pathVariables() {
+		return delegate.pathVariables();
 	}
 
 	/**
 	 * 
 	 * @return
 	 */
-	public abstract Iterator<String> getFileFieldNames();
+	public abstract Iterator<String> fileFields();
 
 	/**
 	 * 
-	 * @param fieldName
+	 * @param field
 	 * @return
 	 */
-	public abstract MultipartRequestFile getFile(String fieldName);
+	public abstract MultipartRequestFile file(String field);
 
 	/**
 	 * 
 	 * @return
 	 */
-	public abstract Map<String, MultipartRequestFile> getFileMap();
+	public abstract Map<String, MultipartRequestFile> files();
 }

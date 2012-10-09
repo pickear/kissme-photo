@@ -28,7 +28,7 @@ public class CommonsMulitipartRequestContext implements RequestContext {
 	}
 
 	public String getCharacterEncoding() {
-		return request.getCharset();
+		return request.charset();
 	}
 
 	public String getContentType() {

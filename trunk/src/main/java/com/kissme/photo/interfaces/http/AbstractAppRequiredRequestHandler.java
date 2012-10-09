@@ -35,7 +35,7 @@ public abstract class AbstractAppRequiredRequestHandler extends AbstractJsonpReq
 
 	@Override
 	protected final String doHandleRequest(Request request, Response response) {
-		String appKey = request.getParameter("appkey");
+		String appKey = request.param("appkey");
 		if (StringUtils.isBlank(appKey)) {
 			throw new BadRequestException();
 		}
@@ -49,8 +49,8 @@ public abstract class AbstractAppRequiredRequestHandler extends AbstractJsonpReq
 			throw ExceptionUtils.oneThrow("app key is expire!");
 		}
 
-		String signature = request.getParameter("signature");
-		String timestamp = request.getParameter("timestamp");
+		String signature = request.param("signature");
+		String timestamp = request.param("timestamp");
 		SignatureUtils.verify(signature, timestamp, app.getAppSecret());
 		return doHandleAppRequest(app, request, response);
 	}
